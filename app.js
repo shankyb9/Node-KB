@@ -8,9 +8,13 @@ const session = require('express-session');
 const cookieSession = require('cookie-session'); // as with express-session, memory leak warning was coming
 // search about cookie-session usage if problem is to be removed
 
+const config = require('./config/database');
+const passport = require('passport');
+
 mongoose.Promise = global.Promise
 
-mongoose.connect('mongodb://localhost/nodekb');
+// mongoose.connect('mongodb://localhost/nodekb');
+mongoose.connect(config.database);
 let db = mongoose.connection;
 
 //Check connection
@@ -75,6 +79,18 @@ app.use(expressValidator({
   }
 }));
 
+// Passport config
+require('./config/passport')(passport);
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// for global user variable
+app.get('*', function(req, res, next){
+  res.locals.user = req.user || null;
+  next();
+});
+
 // Home Route
 app.get('/',(req,res) => {
 
@@ -94,6 +110,8 @@ app.get('/',(req,res) => {
 // Route Files
 let articles = require ('./routes/articles');
 app.use('/articles',articles);
+let users = require ('./routes/users');
+app.use('/users',users);
 
 app.listen('3000',function(){
   console.log('Listening to port 3000');
