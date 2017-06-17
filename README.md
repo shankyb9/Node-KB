@@ -1,6 +1,6 @@
 # Node-KB
 
-*This app will let you add your articles and store them on the database with proper user authentication. Every registred client will be able to see all articles, but will be allowed to modify only their own articles.
+* This app will let you add your articles and store them on the database with proper user authentication. Every registred client will be able to see all articles, but will be allowed to modify only their own articles.
 
 - Node.js was used to make this app
 - Express.js was used as the web framework
